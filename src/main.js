@@ -6,8 +6,8 @@ function registerTrevorismEventSender(options = {}){
   if (!options.on) {
     throw new Error('Missing required option: on')
   }
-  if (!options.service) {
-    throw new Error('Missing required option: service')
+  if (!options.config) {
+    throw new Error('Missing required option: config')
   }
 
   let startMillis;
@@ -16,9 +16,9 @@ function registerTrevorismEventSender(options = {}){
     startMillis = Date.now();
   })
 
-  options.on('after:run', (afterRun) => {
+  options.on('after:run', async (afterRun) => {
     const testEvent = {
-      service: options.service,
+      service: options.config.projectRoot,
       kind: 'cypress',
       success: afterRun.totalFailed === 0,
       numberOfTests: afterRun.totalTests,
@@ -26,14 +26,13 @@ function registerTrevorismEventSender(options = {}){
       date: new Date().toISOString(),
     }
 
-    axios.get("https://event.data.trevorism.com/ping").then(
-      () => {
-        console.log("Successfully sent cypress test result event. " + JSON.stringify(testEvent));
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    console.log("What are config values? " + JSON.stringify(options.config));
+    try {
+      await axios.get("https://event.data.trevorism.com/ping");
+      console.log("Successfully sent cypress test result event. " + JSON.stringify(testEvent));
+    } catch (error) {
+      console.error(error);
+    }
 
   })
 }

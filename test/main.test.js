@@ -17,7 +17,11 @@ test('registerTrevorismEventSender registers events when options are provided', 
       }
       count++;
     },
-    service: 'test-service-name'
+    config: {
+      projectRoot: 'test',
+      testingType: 'e2e',
+      version: '5'
+    }
   };
 
   registerTrevorismEventSender(mockEventEmitter);
