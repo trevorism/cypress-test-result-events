@@ -1,4 +1,4 @@
-export const registerTrevorismEventSender = (options = {}) =>{
+function registerTrevorismEventSender(options = {}){
 
   if (!options.on) {
     throw new Error('Missing required option: on')
@@ -37,3 +37,5 @@ export const registerTrevorismEventSender = (options = {}) =>{
     console.log("allResults: " + allResults);
   })
 }
+
+module.exports = registerTrevorismEventSender

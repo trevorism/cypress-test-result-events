@@ -2,7 +2,7 @@
   "name": "@trevorism/cypress-test-result-events",
   "version": "0.1.0",
   "description": "Cypress plugin to send a test result event",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
@@ -29,5 +29,8 @@
     "vitest": "^1.6.0"
   },
   "license": "MIT",
-  "repository": "trevorism/cypress-test-result-events"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trevorism/cypress-test-result-events.git"
+  }
 }

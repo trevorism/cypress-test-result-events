@@ -10,6 +10,8 @@ Cypress plugin to send Trevorism testResult events.
 ## Usage
 `cypress.config.js`
 ``` 
+import {registerTrevorismEventSender} from "@trevorism/cypress-test-result-events";
+
   ...
   e2e: {
     setupNodeEvents(on, config) {

@@ -1,4 +1,4 @@
-import { registerTrevorismEventSender } from '../src/main.js';
+import registerTrevorismEventSender from '../src/main.js';
 import { test, expect } from 'vitest';
 
 test('registerTrevorismEventSender throws an error when no options are provided', () => {
