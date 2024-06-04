@@ -15,7 +15,7 @@ import {registerTrevorismEventSender} from "@trevorism/cypress-test-result-event
   ...
   e2e: {
     setupNodeEvents(on, config) {
-      registerTrevorismEventSender({on});
+      registerTrevorismEventSender({on, service:'<my service>'});
     }
   },
   ...
