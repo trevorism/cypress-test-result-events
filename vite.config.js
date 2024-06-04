@@ -13,6 +13,6 @@ export default defineConfig({
   },
   plugins: [],
   test: {
-    setupFiles: resolve("test/test.js"),
+    setupFiles: resolve("test/main.test.js"),
   },
 });
