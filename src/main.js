@@ -1,40 +1,40 @@
+
+import axios from 'axios';
+
 function registerTrevorismEventSender(options = {}){
 
   if (!options.on) {
     throw new Error('Missing required option: on')
   }
+  if (!options.service) {
+    throw new Error('Missing required option: service')
+  }
 
-  let allResults;
   let startMillis;
 
   options.on('before:run', () => {
-    allResults = {}
     startMillis = Date.now();
   })
 
-  options.on('after:spec', (spec, results) => {
-    allResults[spec.relative] = {}
-    // shortcut
-    const r = allResults[spec.relative]
-    results.tests.forEach((t) => {
-      const testTitle = t.title.join(' ')
-      r[testTitle] = t.state
-    })
-  })
-
   options.on('after:run', (afterRun) => {
-    allResults.totals = {
-      suites: afterRun.totalSuites,
-      tests: afterRun.totalTests,
-      failed: afterRun.totalFailed,
-      passed: afterRun.totalPassed,
-      pending: afterRun.totalPending,
-      skipped: afterRun.totalSkipped,
+    const testEvent = {
+      service: options.service,
+      kind: 'cypress',
+      success: afterRun.totalFailed === 0,
+      numberOfTests: afterRun.totalTests,
+      durationMillis: Date.now() - startMillis,
+      date: new Date().toISOString(),
     }
-    allResults.durationMillis = Date.now() - startMillis;
 
-    // eslint-disable-next-line no-undef
-    console.log("allResults: " + allResults);
+    axios.get("https://event.data.trevorism.com/ping").then(
+      () => {
+        console.log("Successfully sent cypress test result event. " + JSON.stringify(testEvent));
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
   })
 }
 
