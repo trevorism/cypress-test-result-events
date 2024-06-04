@@ -6,6 +6,12 @@
 </head>
 <body>
   <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { registerTrevorismEventSender } from '/src/main.js';
+    registerTrevorismEventSender({"x": 2});
+  </script>
+  <script>
+
+  </script>
 </body>
 </html>
