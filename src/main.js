@@ -1,13 +1,17 @@
 
 import axios from 'axios';
 
-function registerTrevorismEventSender(options = {}){
+function registerTrevorismEventSender(options = {}, name){
 
   if (!options.on) {
     throw new Error('Missing required option: on')
   }
-  if (!options.config) {
-    throw new Error('Missing required option: config')
+  if (!name) {
+    throw new Error('Missing required option: name')
+  }
+  if(!options.config.env.trevorismTestEvent || options.config.env.trevorismTestEvent !== 'enabled'){
+    console.log('Trevorism test event sending is disabled. Set CYPRESS_trevorismTestEvent=enabled to enable it.');
+    return;
   }
 
   let startMillis;
@@ -18,7 +22,7 @@ function registerTrevorismEventSender(options = {}){
 
   options.on('after:run', async (afterRun) => {
     const testEvent = {
-      service: options.config.projectRoot,
+      service: name,
       kind: 'cypress',
       success: afterRun.totalFailed === 0,
       numberOfTests: afterRun.totalTests,
@@ -26,10 +30,11 @@ function registerTrevorismEventSender(options = {}){
       date: new Date().toISOString(),
     }
 
-    console.log("What are config values? " + JSON.stringify(options.config));
     try {
-      await axios.get("https://event.data.trevorism.com/ping");
-      console.log("Successfully sent cypress test result event. " + JSON.stringify(testEvent));
+      console.log("Sending cypress test result event.");
+      await axios.post("https://event.data.trevorism.com/event/testResult", testEvent, {
+        headers: { 'Content-Type': 'application/json'}
+      });
     } catch (error) {
       console.error(error);
     }

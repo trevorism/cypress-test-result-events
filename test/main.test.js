@@ -1,5 +1,7 @@
 import registerTrevorismEventSender from '../src/main.js';
 import { test, expect } from 'vitest';
+import sinon from 'sinon';
+import axios from 'axios';
 
 test('registerTrevorismEventSender throws an error when no options are provided', () => {
   expect(() => registerTrevorismEventSender()).toThrow('Missing required option: on');
@@ -20,10 +22,16 @@ test('registerTrevorismEventSender registers events when options are provided', 
     config: {
       projectRoot: 'test',
       testingType: 'e2e',
-      version: '5'
+      version: '5',
+      env: {
+        trevorismTestEvent: 'enabled'
+      }
     }
   };
 
-  registerTrevorismEventSender(mockEventEmitter);
+  const stub = sinon.stub(axios, 'post');
+  stub.resolves({ data: {} });
+
+  registerTrevorismEventSender(mockEventEmitter, 'testService');
   expect(count).toBe(2);
 });
