@@ -1,6 +1,6 @@
 {
   "name": "@trevorism/cypress-test-result-events",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Cypress plugin to send a test result event",
   "type": "commonjs",
   "scripts": {
